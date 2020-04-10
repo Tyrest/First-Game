@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using System;
+
 namespace First_Game
 {
     /// <summary>
@@ -20,6 +22,10 @@ namespace First_Game
         Vector2 tyrestyPosition;
         Vector2 tyrestyVelocity;
         float tyrestyAccel;
+
+        Asteroid [] asteroids = new Asteroid [64]; // Hopefully enough space to hold everything
+
+        Random rand = new Random();
         
         public Game1()
         {
@@ -41,6 +47,8 @@ namespace First_Game
             tyrestyVelocity = Vector2.Zero;
             tyrestyAccel = 70f;
 
+            // ast1 = new Asteroid(tyrestyPosition, rand.Next(0, 50), rand.Next(-4, 4) / 8, rand.Next(64, 128), rand.Next(64, 128), graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+
             base.Initialize();
         }
 
@@ -55,6 +63,7 @@ namespace First_Game
 
             // TODO: use this.Content to load your game content here
             tyrestyTexture = Content.Load<Texture2D>("Tyresty");
+            Asteroid.texture = Content.Load<Texture2D>("Asteroid");
         }
 
         /// <summary>
@@ -127,6 +136,8 @@ namespace First_Game
                 tyrestyVelocity.X = 0;
             }
 
+            ast1.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -141,6 +152,7 @@ namespace First_Game
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             spriteBatch.Draw(tyrestyTexture, tyrestyPosition, null, Color.White, 0f, new Vector2(tyrestyTexture.Width / 2, tyrestyTexture.Height / 2), Vector2.One, SpriteEffects.None, 0f);
+            ast1.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

@@ -18,3 +18,4 @@ D:\Game Repos\First Game\First Game\obj\Debug\First Game.csproj.CopyComplete
 D:\Game Repos\First Game\First Game\obj\Debug\First Game.exe
 D:\Game Repos\First Game\First Game\obj\Debug\First Game.pdb
 D:\Game Repos\First Game\First Game\bin\DesktopGL\AnyCPU\Debug\Content\Tyresty.xnb
+D:\Game Repos\First Game\First Game\bin\DesktopGL\AnyCPU\Debug\Content\Asteroid.xnb
