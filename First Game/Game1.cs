@@ -18,12 +18,13 @@ namespace First_Game
 
         const float tyrestyTopSpeed = 420f;
         const float tyrestyFriction = 0.85f;
+        const int numAsteroids = 8;
 
         Vector2 tyrestyPosition;
         Vector2 tyrestyVelocity;
         float tyrestyAccel;
 
-        Asteroid [] asteroids = new Asteroid [64]; // Hopefully enough space to hold everything
+        Asteroid [] asteroids = new Asteroid [numAsteroids]; // Hopefully enough space to hold everything
 
         Random rand = new Random();
         
@@ -64,6 +65,12 @@ namespace First_Game
             // TODO: use this.Content to load your game content here
             tyrestyTexture = Content.Load<Texture2D>("Tyresty");
             Asteroid.texture = Content.Load<Texture2D>("Asteroid");
+
+            for (int i = 0; i < numAsteroids; i++)
+            {
+                float sizespeed = rand.Next(64);
+                asteroids[i] = new Asteroid(tyrestyPosition, rand.Next(51), (rand.Next(16) - 8) / 16.0f, 32 + sizespeed, 192 - sizespeed, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+            }
         }
 
         /// <summary>
@@ -136,7 +143,10 @@ namespace First_Game
                 tyrestyVelocity.X = 0;
             }
 
-            ast1.Update(gameTime);
+            for (int i = 0; i < numAsteroids; i++)
+            {
+                asteroids[i].Update(gameTime);
+            }
 
             base.Update(gameTime);
         }
@@ -151,8 +161,25 @@ namespace First_Game
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+
             spriteBatch.Draw(tyrestyTexture, tyrestyPosition, null, Color.White, 0f, new Vector2(tyrestyTexture.Width / 2, tyrestyTexture.Height / 2), Vector2.One, SpriteEffects.None, 0f);
-            ast1.Draw(spriteBatch);
+
+            for (int i = 0; i < numAsteroids; i++)
+            {
+                if (asteroids[i].CheckOut(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight))
+                {
+                    float sizespeed = rand.Next(64);
+                    asteroids[i] = new Asteroid(tyrestyPosition, rand.Next(51), (rand.Next(16) - 8) / 16.0f, 32 + sizespeed, 192 - sizespeed, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+                }
+
+                if (asteroids[i].CheckCollision(tyrestyPosition))
+                {
+                    Exit();
+                }
+
+                asteroids[i].Draw(spriteBatch);
+            }
+
             spriteBatch.End();
 
             base.Draw(gameTime);

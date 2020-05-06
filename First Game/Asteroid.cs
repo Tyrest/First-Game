@@ -22,27 +22,28 @@ namespace First_Game
         /**
          * Constructor for the Asteroid class
          * spawn should be from 0 to 50
+         * angle offset should be from -0.5 to 0.5
          */
         public Asteroid(Vector2 playerPosition, float spawn, float angleOffset, float size, float speed, float windowWidth, float windowHeight)
         {
             if (spawn < 16)
             {
-                position.Y = -size;
+                position.Y = -size / 2;
                 position.X = spawn / 16 * windowWidth;
             }
             else if (spawn >= 16 && spawn < 25)
             {
-                position.X = windowWidth + size;
+                position.X = windowWidth + size / 2;
                 position.Y = (spawn - 16) / 9 * windowHeight;
             }
             else if (spawn >= 25 && spawn < 41)
             {
-                position.Y = windowHeight + size;
+                position.Y = windowHeight + size / 2;
                 position.X = (spawn - 25) / 16 * windowWidth;
             }
             else
             {
-                position.X = -size;
+                position.X = -size / 2;
                 position.Y = (spawn - 41) / 9 * windowHeight;
             }
 
@@ -50,6 +51,10 @@ namespace First_Game
             this.speed = speed;
 
             angle = (float)Math.Atan((position.Y - playerPosition.Y) / (playerPosition.X - position.X)) + angleOffset;
+            if (position.X > windowWidth / 2)
+            {
+                angle += (float) Math.PI;
+            }
         }
 
         public void Update(GameTime gameTime)
@@ -60,7 +65,7 @@ namespace First_Game
 
         public bool CheckCollision(Vector2 playerPosition)
         {
-            if (Math.Pow(playerPosition.X - position.X, 2) + Math.Pow(position.Y - playerPosition.Y, 2) <= Math.Pow(size, 2))
+            if (Math.Pow(playerPosition.X - position.X, 2) + Math.Pow(position.Y - playerPosition.Y, 2) <= Math.Pow(size / 2, 2))
             {
                 return true;
             }
@@ -81,7 +86,7 @@ namespace First_Game
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, null, Color.White, 0f, new Vector2(size, size), Vector2.One * size / texture.Width, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position, null, Color.White, 0f, new Vector2(size / 2, size / 2), Vector2.One * size / texture.Width, SpriteEffects.None, 0f);
             //spriteBatch.Draw(texture, position, null, Color.White, 0f, new Vector2(32, 32), Vector2.One, SpriteEffects.None, 0f);
         }
     }
